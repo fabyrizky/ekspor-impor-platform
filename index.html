@@ -3,114 +3,442 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TaniExport AI Assistant - Solusi Ekspor Keripik Ubi</title>
+    <title>TaniExport AI Pro - Solusi Ekspor Keripik Ubi 3.0</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <style>
         :root {
-            --primary-color: #4e73df;
-            --success-color: #1cc88a;
-            --info-color: #36b9cc;
-            --warning-color: #f6c23e;
-            --danger-color: #e74a3b;
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --success-color: #10b981;
+            --info-color: #06b6d4;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --dark-color: #1e293b;
+            --light-color: #f8fafc;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fc;
-            color: #5a5c69;
-        }
-        
-        .navbar {
-            background: linear-gradient(135deg, var(--primary-color) 0%, #224abe 100%);
-        }
-        
-        .card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
-            transition: transform 0.3s;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .card-header {
-            background-color: #f8f9fc;
-            border-bottom: 1px solid #e3e6f0;
-            font-weight: bold;
-        }
-        
-        .btn-primary {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-        }
-        
-        .btn-primary:hover {
-            background-color: #2e59d9;
-            border-color: #2653d4;
-        }
-        
-        .metric-card {
-            border-left: 4px solid;
-        }
-        
-        .metric-card.primary {
-            border-left-color: var(--primary-color);
-        }
-        
-        .metric-card.success {
-            border-left-color: var(--success-color);
-        }
-        
-        .metric-card.info {
-            border-left-color: var(--info-color);
-        }
-        
-        .metric-card.warning {
-            border-left-color: var(--warning-color);
-        }
-        
-        .hero-section {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 60px 0;
-            margin-bottom: 30px;
-            border-radius: 0 0 20px 20px;
+            color: var(--dark-color);
+            overflow-x: hidden;
         }
         
-        .chart-container {
-            height: 300px;
+        /* Navbar Modern */
+        .navbar {
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+        
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            margin: 0 0.5rem;
+            transition: all 0.3s ease;
             position: relative;
         }
         
-        .footer {
-            background-color: #f8f9fc;
-            padding: 20px 0;
-            margin-top: 40px;
-            border-top: 1px solid #e3e6f0;
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: white;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
         }
         
-        .sentiment-positive {
-            color: var(--success-color);
+        .nav-link:hover::after {
+            width: 80%;
         }
         
-        .sentiment-negative {
-            color: var(--danger-color);
+        /* Hero Section dengan Animasi */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
         }
         
-        .sentiment-neutral {
-            color: var(--warning-color);
+        .hero-bg-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            color: white;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1s ease;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.2s;
+            animation-fill-mode: both;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Card Modern */
+        .card {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            height: 100%;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 1.25rem;
+            font-weight: 600;
+        }
+        
+        /* Metric Cards */
+        .metric-card {
+            border-radius: 16px;
+            padding: 1.5rem;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+        
+        .metric-label {
+            color: #64748b;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .metric-icon {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2.5rem;
+            opacity: 0.1;
+        }
+        
+        /* 3D Container */
+        .simulation-3d {
+            height: 500px;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        }
+        
+        #threejs-container {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .simulation-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .control-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        /* AI Chatbot */
+        .ai-chatbot {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+        
+        .chat-bubble {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 20px rgba(99, 102, 241, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+            }
+        }
+        
+        .chat-bubble:hover {
+            transform: scale(1.1);
+        }
+        
+        .chat-window {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .chat-header {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+        
+        .chat-input {
+            padding: 1rem;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .message {
+            margin-bottom: 1rem;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .message.user {
+            text-align: right;
+        }
+        
+        .message-bubble {
+            display: inline-block;
+            padding: 0.75rem 1rem;
+            border-radius: 18px;
+            max-width: 80%;
+        }
+        
+        .message.ai .message-bubble {
+            background: #f1f5f9;
+            color: var(--dark-color);
+        }
+        
+        .message.user .message-bubble {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+        
+        /* Interactive Charts */
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin-top: 2rem;
+        }
+        
+        /* Data Tables */
+        .data-table {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .data-table thead {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+        
+        .data-table tbody tr {
+            transition: all 0.3s ease;
+        }
+        
+        .data-table tbody tr:hover {
+            background: #f8fafc;
+            transform: scale(1.01);
+        }
+        
+        /* Profit Calculator */
+        .calculator-input {
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .calculator-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        
+        /* Loading Animation */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .chart-container {
+                height: 300px;
+            }
+            
+            .simulation-3d {
+                height: 300px;
+            }
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark-color);
+            color: white;
+            padding: 3rem 0 2rem;
+            margin-top: 5rem;
+        }
+        
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: white;
         }
     </style>
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-dark navbar-expand-lg">
+    <nav class="navbar navbar-dark navbar-expand-lg sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="#">
-                <i class="bi bi-graph-up-arrow me-2"></i>TaniExport AI Assistant
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-cube me-2"></i>TaniExport AI Pro
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -118,19 +446,19 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#dashboard">Dashboard</a>
+                        <a class="nav-link" href="#dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#simulation-3d">Simulasi 3D</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#market-analysis">Analisis Pasar</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#price-prediction">Prediksi Harga</a>
+                        <a class="nav-link" href="#ai-predictions">Prediksi AI</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#document-tracking">Dokumen</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#profit-calculator">Kalkulator</a>
+                        <a class="nav-link" href="#supply-chain">Rantai Pasok</a>
                     </li>
                 </ul>
             </div>
@@ -138,377 +466,725 @@
     </nav>
 
     <!-- Hero Section -->
-    <div class="hero-section">
-        <div class="container text-center">
-            <h1 class="display-4 fw-bold mb-4">Solusi AI untuk Bisnis Ekspor Keripik Ubi</h1>
-            <p class="lead mb-4">Kelola bisnis ekspor-impor Anda dengan teknologi AI yang terjangkau</p>
-            <div class="d-flex justify-content-center">
-                <button class="btn btn-primary btn-lg me-3" onclick="scrollToSection('dashboard')">
-                    <i class="bi bi-speedometer2 me-2"></i>Mulai Sekarang
+    <section class="hero-section">
+        <div class="hero-bg-animation">
+            <canvas id="hero-canvas"></canvas>
+        </div>
+        <div class="container hero-content">
+            <div class="row align-items-center min-vh-100">
+                <div class="col-lg-6">
+                    <h1 class="hero-title">Revolutionizing Ubi Chip Export with AI</h1>
+                    <p class="hero-subtitle">Platform AI-powered pertama di Indonesia untuk optimasi bisnis ekspor keripik ubi dengan teknologi 3D dan prediksi real-time</p>
+                    <div class="d-flex gap-3">
+                        <button class="btn btn-light btn-lg px-4" onclick="scrollToSection('dashboard')">
+                            <i class="fas fa-rocket me-2"></i>Mulai Sekarang
+                        </button>
+                        <button class="btn btn-outline-light btn-lg px-4" onclick="showDemo()">
+                            <i class="fas fa-play-circle me-2"></i>Lihat Demo
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="simulation-3d">
+                        <div id="threejs-container"></div>
+                        <div class="simulation-controls">
+                            <button class="control-btn" onclick="rotateCamera()">
+                                <i class="fas fa-sync-alt"></i> Putar
+                            </button>
+                            <button class="control-btn" onclick="zoomIn()">
+                                <i class="fas fa-search-plus"></i> Zoom In
+                            </button>
+                            <button class="control-btn" onclick="zoomOut()">
+                                <i class="fas fa-search-minus"></i> Zoom Out
+                            </button>
+                            <button class="control-btn" onclick="resetView()">
+                                <i class="fas fa-home"></i> Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Section -->
+    <section id="dashboard" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Dashboard Bisnis Real-time</h2>
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="metric-card">
+                        <i class="fas fa-chart-line metric-icon text-primary"></i>
+                        <div class="metric-label">Total Ekspor 2023</div>
+                        <div class="metric-value text-primary">Rp 487.2M</div>
+                        <div class="text-success">
+                            <i class="fas fa-arrow-up"></i> 23.5% vs 2022
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="metric-card">
+                        <i class="fas fa-dollar-sign metric-icon text-success"></i>
+                        <div class="metric-label">Keuntungan Bersih</div>
+                        <div class="metric-value text-success">Rp 156.8M</div>
+                        <div class="text-success">
+                            <i class="fas fa-arrow-up"></i> 18.2% vs bulan lalu
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="metric-card">
+                        <i class="fas fa-shipping-fast metric-icon text-info"></i>
+                        <div class="metric-label">Pesanan Aktif</div>
+                        <div class="metric-value text-info">24</div>
+                        <div class="text-info">
+                            <i class="fas fa-arrow-up"></i> 8 pengiriman hari ini
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="metric-card">
+                        <i class="fas fa-warehouse metric-icon text-warning"></i>
+                        <div class="metric-label">Stok Tersedia</div>
+                        <div class="metric-value text-warning">2,450 Kg</div>
+                        <div class="text-warning">
+                            <i class="fas fa-exclamation-triangle"></i> Perlu replenish
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Charts -->
+            <div class="row mt-5">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-chart-area me-2"></i>Tren Ekspor Real-time
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="export-trend-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-globe-asia me-2"></i>Pasar Ekspor
+                        </div>
+                        <div class="card-body">
+                            <canvas id="market-share-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3D Simulation Section -->
+    <section id="simulation-3d" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">Simulasi Rantai Pasok 3D</h2>
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="simulation-3d">
+                        <div id="supply-chain-3d"></div>
+                        <div class="simulation-controls">
+                            <button class="control-btn" onclick="playAnimation()">
+                                <i class="fas fa-play"></i> Play
+                            </button>
+                            <button class="control-btn" onclick="pauseAnimation()">
+                                <i class="fas fa-pause"></i> Pause
+                            </button>
+                            <button class="control-btn" onclick="changeView('farm')">
+                                <i class="fas fa-seedling"></i> Farm
+                            </button>
+                            <button class="control-btn" onclick="changeView('factory')">
+                                <i class="fas fa-industry"></i> Factory
+                            </button>
+                            <button class="control-btn" onclick="changeView('port')">
+                                <i class="fas fa-ship"></i> Port
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-info-circle me-2"></i>Informasi Simulasi
+                        </div>
+                        <div class="card-body">
+                            <h5>Status Rantai Pasok</h5>
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>Petani → Pabrik</span>
+                                    <span class="text-success">90%</span>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" style="width: 90%"></div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>Pabrik → Pelabuhan</span>
+                                    <span class="text-warning">75%</span>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-warning" style="width: 75%"></div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>Pelabuhan → Pasar</span>
+                                    <span class="text-info">60%</span>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-info" style="width: 60%"></div>
+                                </div>
+                            </div>
+                            
+                            <h5 class="mt-4">Prediksi AI</h5>
+                            <div class="alert alert-info">
+                                <i class="fas fa-robot me-2"></i>
+                                Berdasarkan analisis, potensi delay di pelabuhan meningkat 15% karena cuaca ekstrem. Disarankan alternatif rute via Pelabuhan Tanjung Priok.
+                            </div>
+                            
+                            <button class="btn btn-primary w-100 mt-3" onclick="generateOptimizationReport()">
+                                <i class="fas fa-magic me-2"></i>Optimasi AI
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market Analysis Section -->
+    <section id="market-analysis" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Analisis Pasar AI-Powered</h2>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-brain me-2"></i>Analisis Sentimen Real-time
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Masukkan berita atau tren pasar:</label>
+                                <textarea class="form-control" id="market-news" rows="4" placeholder="Contoh: Kenaikan permintaan keripik ubi organik di pasar Eropa..."></textarea>
+                            </div>
+                            <button class="btn btn-primary" onclick="analyzeMarketSentiment()">
+                                <i class="fas fa-search me-2"></i>Analisis AI
+                            </button>
+                            
+                            <div id="sentiment-result" class="mt-4 d-none">
+                                <h5>Hasil Analisis:</h5>
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between">
+                                            <span>Sentimen Pasar</span>
+                                            <span id="sentiment-score" class="fw-bold">85% Positif</span>
+                                        </div>
+                                        <div class="progress mt-1">
+                                            <div id="sentiment-bar" class="progress-bar bg-success" style="width: 85%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="alert alert-success">
+                                    <i class="fas fa-lightbulb me-2"></i>
+                                    <strong>Rekomendasi AI:</strong> <span id="ai-recommendation">Tingkatkan produksi keripik ubi organik untuk pasar Eropa. Margin potensial: 22-28%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-chart-pie me-2"></i>Segmentasi Pasar Global
+                        </div>
+                        <div class="card-body">
+                            <canvas id="market-segment-chart"></canvas>
+                            <div class="mt-3">
+                                <h6>Insight AI:</h6>
+                                <ul>
+                                    <li>Pasar Jepang menunjukkan pertumbuhan tercepat (32% YoY)</li>
+                                    <li>Eropa menyumbang 45% total revenue dengan margin tertinggi</li>
+                                    <li>AS memiliki potensi pertumbuhan 25% untuk produk organik</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Predictions Section -->
+    <section id="ai-predictions" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">Prediksi AI Canggih</h2>
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-crystal-ball me-2"></i>Forecast Harga & Permintaan 90 Hari
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="prediction-chart"></canvas>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-4">
+                                    <div class="text-center p-3 bg-light rounded">
+                                        <h6 class="text-primary">Harga Prediksi</h6>
+                                        <h3 class="text-primary">$4.25/Kg</h3>
+                                        <small class="text-success">+12% dari saat ini</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="text-center p-3 bg-light rounded">
+                                        <h6 class="text-info">Permintaan Prediksi</h6>
+                                        <h3 class="text-info">8,500 Kg</h3>
+                                        <small class="text-success">+18% dari bulan lalu</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="text-center p-3 bg-light rounded">
+                                        <h6 class="text-warning">Akurasi Model</h6>
+                                        <h3 class="text-warning">94.2%</h3>
+                                        <small class="text-muted">Berdasarkan data historis</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-robot me-2"></i>AI Assistant
+                        </div>
+                        <div class="card-body">
+                            <div class="ai-suggestions">
+                                <h6>Aksi Rekomendasi:</h6>
+                                <div class="list-group">
+                                    <a href="#" class="list-group-item list-group-item-action">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">Tingkatkan Produksi</h6>
+                                            <small class="text-success">Prioritas 1</small>
+                                        </div>
+                                        <p class="mb-1">Tambah 2,000 Kg untuk memenuhi permintaan Q4</p>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-action">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">Negosiasi Harga</h6>
+                                            <small class="text-warning">Prioritas 2</small>
+                                        </div>
+                                        <p class="mb-1">Kesepakatan baru dengan supplier bahan baku</p>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-action">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">Ekspansi Pasar</h6>
+                                            <small class="text-info">Prioritas 3</small>
+                                        </div>
+                                        <p class="mb-1">Fokus pada pasar Timur Tengah untuk Q1 2024</p>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <h6>Model Performance:</h6>
+                                <div class="mb-2">
+                                    <div class="d-flex justify-content-between">
+                                        <span>MAPE (Error)</span>
+                                        <span>5.8%</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" style="width: 94.2%"></div>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="d-flex justify-content-between">
+                                        <span>R² Score</span>
+                                        <span>0.942</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-info" style="width: 94.2%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Supply Chain Section -->
+    <section id="supply-chain" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Manajemen Rantai Pasok</h2>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fas fa-link me-2"></i>Tracking Real-time
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-filter me-1"></i> Filter
+                                </button>
+                                <button class="btn btn-sm btn-primary">
+                                    <i class="fas fa-plus me-1"></i> Tambah Pengiriman
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID Pengiriman</th>
+                                            <th>Produk</th>
+                                            <th>Asal</th>
+                                            <th>Tujuan</th>
+                                            <th>Status</th>
+                                            <th>Progress</th>
+                                            <th>Estimasi Tiba</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>EXP-2023-0842</td>
+                                            <td>Keripik Ubi Original</td>
+                                            <td>Jakarta</td>
+                                            <td>Tokyo, Jepang</td>
+                                            <td><span class="badge bg-success">Dalam Pengiriman</span></td>
+                                            <td>
+                                                <div class="progress" style="height: 20px;">
+                                                    <div class="progress-bar bg-success" style="width: 75%">75%</div>
+                                                </div>
+                                            </td>
+                                            <td>25 Nov 2023</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-secondary">
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>EXP-2023-0841</td>
+                                            <td>Keripik Ubi Pedas</td>
+                                            <td>Surabaya</td>
+                                            <td>Amsterdam, Belanda</td>
+                                            <td><span class="badge bg-warning">Di Pelabuhan</span></td>
+                                            <td>
+                                                <div class="progress" style="height: 20px;">
+                                                    <div class="progress-bar bg-warning" style="width: 45%">45%</div>
+                                                </div>
+                                            </td>
+                                            <td>30 Nov 2023</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-secondary">
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>EXP-2023-0840</td>
+                                            <td>Keripik Ubi Keju</td>
+                                            <td>Medan</td>
+                                            <td>Los Angeles, USA</td>
+                                            <td><span class="badge bg-info">Proses Produksi</span></td>
+                                            <td>
+                                                <div class="progress" style="height: 20px;">
+                                                    <div class="progress-bar bg-info" style="width: 25%">25%</div>
+                                                </div>
+                                            </td>
+                                            <td>10 Dec 2023</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-secondary">
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>EXP-2023-0839</td>
+                                            <td>Keripik Ubi BBQ</td>
+                                            <td>Makassar</td>
+                                            <td>Dubai, UAE</td>
+                                            <td><span class="badge bg-danger">Tertunda</span></td>
+                                            <td>
+                                                <div class="progress" style="height: 20px;">
+                                                    <div class="progress-bar bg-danger" style="width: 10%">10%</div>
+                                                </div>
+                                            </td>
+                                            <td>15 Dec 2023</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-secondary">
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profit Calculator Section -->
+    <section id="profit-calculator" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">Kalkulator Keuntungan Cerdas</h2>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-calculator me-2"></i>Parameter Bisnis
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Harga Jual per Kg (USD)</label>
+                                <input type="number" class="form-control calculator-input" id="selling-price" value="4.25" step="0.01">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Biaya Produksi per Kg (USD)</label>
+                                <input type="number" class="form-control calculator-input" id="production-cost" value="1.80" step="0.01">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Biaya Pengiriman per Kg (USD)</label>
+                                <input type="number" class="form-control calculator-input" id="shipping-cost" value="0.95" step="0.01">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Biaya Pajak & Bea Cukai (%)</label>
+                                <input type="number" class="form-control calculator-input" id="tax-cost" value="8.5" step="0.1">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Kuantitas (Kg)</label>
+                                <input type="number" class="form-control calculator-input" id="quantity" value="500" step="10">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Negara Tujuan</label>
+                                <select class="form-select calculator-input" id="destination">
+                                    <option value="japan">Jepang</option>
+                                    <option value="europe">Eropa</option>
+                                    <option value="usa">Amerika Serikat</option>
+                                    <option value="middleeast">Timur Tengah</option>
+                                    <option value="australia">Australia</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary w-100" onclick="calculateAdvancedProfit()">
+                                <i class="fas fa-calculator me-2"></i>Hitung Keuntungan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-chart-pie me-2"></i>Hasil Analisis
+                        </div>
+                        <div class="card-body">
+                            <div id="profit-results">
+                                <div class="row mb-4">
+                                    <div class="col-6">
+                                        <div class="text-center p-3 bg-light rounded">
+                                            <h6 class="text-muted">Total Pendapatan</h6>
+                                            <h3 class="text-primary" id="total-revenue">$2,125.00</h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="text-center p-3 bg-light rounded">
+                                            <h6 class="text-muted">Total Biaya</h6>
+                                            <h3 class="text-danger" id="total-cost">$1,531.25</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-4">
+                                    <div class="col-6">
+                                        <div class="text-center p-3 bg-light rounded">
+                                            <h6 class="text-muted">Keuntungan per Kg</h6>
+                                            <h3 class="text-success" id="profit-per-kg">$1.19</h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="text-center p-3 bg-light rounded">
+                                            <h6 class="text-muted">Total Keuntungan</h6>
+                                            <h3 class="text-success" id="total-profit">$593.75</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <h6>Margin Keuntungan</h6>
+                                    <div class="progress" style="height: 30px;">
+                                        <div id="profit-margin-bar" class="progress-bar bg-success" style="width: 27.9%">27.9%</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="alert alert-success" id="profit-recommendation">
+                                    <i class="fas fa-lightbulb me-2"></i>
+                                    <strong>Rekomendasi AI:</strong> Margin keuntungan Anda sangat baik! Pertimbangkan untuk meningkatkan volume penjualan ke pasar Jepang yang memiliki permintaan tinggi.
+                                </div>
+                                
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-outline-primary" onclick="saveCalculation()">
+                                        <i class="fas fa-save me-2"></i>Simpan Perhitungan
+                                    </button>
+                                    <button class="btn btn-outline-secondary" onclick="exportCalculation()">
+                                        <i class="fas fa-file-export me-2"></i>Export ke PDF
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Chatbot -->
+    <div class="ai-chatbot">
+        <div class="chat-bubble" onclick="toggleChat()">
+            <i class="fas fa-robot"></i>
+        </div>
+        <div class="chat-window" id="chat-window">
+            <div class="chat-header">
+                <div>
+                    <i class="fas fa-robot me-2"></i>TaniExport AI Assistant
+                </div>
+                <button class="btn btn-sm btn-light" onclick="toggleChat()">
+                    <i class="fas fa-times"></i>
                 </button>
-                <button class="btn btn-outline-light btn-lg" onclick="showInfo()">
-                    <i class="bi bi-info-circle me-2"></i>Pelajari Lebih Lanjut
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="message ai">
+                    <div class="message-bubble">
+                        Halo! Saya adalah AI Assistant TaniExport. Saya bisa membantu Anda dengan:
+                        <ul>
+                            <li>Analisis pasar ekspor</li>
+                            <li>Prediksi harga dan permintaan</li>
+                            <li>Optimasi rantai pasok</li>
+                            <li>Perhitungan keuntungan</li>
+                            <li>Rekomendasi bisnis</li>
+                        </ul>
+                        Ada yang bisa saya bantu hari ini?
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" class="form-control" id="chat-input" placeholder="Ketik pesan Anda...">
+                <button class="btn btn-primary" onclick="sendMessage()">
+                    <i class="fas fa-paper-plane"></i>
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="container mb-5">
-        <!-- Dashboard Section -->
-        <section id="dashboard" class="mb-5">
-            <h2 class="mb-4">Dashboard Bisnis</h2>
-            <div class="row g-4">
-                <div class="col-md-3">
-                    <div class="card metric-card primary h-100">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Ekspor</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Rp 245.7 Juta</div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="bi bi-box-seam fs-2 text-gray-300"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-3">
-                    <div class="card metric-card success h-100">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Keuntungan</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Rp 78.3 Juta</div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="bi bi-currency-dollar fs-2 text-gray-300"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-3">
-                    <div class="card metric-card info h-100">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Pesanan Aktif</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">12</div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="bi bi-cart-check fs-2 text-gray-300"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-3">
-                    <div class="card metric-card warning h-100">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Stok Tersedia</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">1,240 Kg</div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="bi bi-archive fs-2 text-gray-300"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Market Analysis Section -->
-        <section id="market-analysis" class="mb-5">
-            <div class="card">
-                <div class="card-header">
-                    <i class="bi bi-graph-up me-2"></i>Analisis Pasar Otomatis
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h5 class="mb-3">Analisis Sentimen Berita Pasar</h5>
-                            <div class="mb-3">
-                                <label for="news-input" class="form-label">Masukkan berita pasar terkini:</label>
-                                <textarea class="form-control" id="news-input" rows="4" placeholder="Contoh: Harga ubi di pasar internasional mengalami kenaikan akibat permintaan yang meningkat..."></textarea>
-                            </div>
-                            <button class="btn btn-primary" onclick="analyzeSentiment()">
-                                <i class="bi bi-search me-2"></i>Analisis Sentimen
-                            </button>
-                            <div id="sentiment-result" class="mt-3 p-3 rounded d-none">
-                                <h6>Hasil Analisis:</h6>
-                                <div id="sentiment-text"></div>
-                                <div class="progress mt-2">
-                                    <div id="sentiment-bar" class="progress-bar" role="progressbar" style="width: 0%"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <h5 class="mb-3">Tren Pasar Terkini</h5>
-                            <div class="chart-container">
-                                <canvas id="market-trend-chart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Price Prediction Section -->
-        <section id="price-prediction" class="mb-5">
-            <div class="card">
-                <div class="card-header">
-                    <i class="bi bi-cash-stack me-2"></i>Prediksi Harga & Permintaan
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <h5 class="mb-3">Prediksi Harga Ubi 30 Hari ke Depan</h5>
-                            <div class="chart-container">
-                                <canvas id="price-prediction-chart"></canvas>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <h5 class="mb-3">Faktor yang Mempengaruhi</h5>
-                            <ul class="list-group">
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    Cuaca
-                                    <span class="badge bg-primary rounded-pill">Tinggi</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    Permintaan Pasar
-                                    <span class="badge bg-success rounded-pill">Naik</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    Stok Gudang
-                                    <span class="badge bg-warning rounded-pill">Sedang</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    Kebijakan Impor
-                                    <span class="badge bg-info rounded-pill">Stabil</span>
-                                </li>
-                            </ul>
-                            <div class="mt-3">
-                                <button class="btn btn-outline-primary w-100" onclick="generateReport()">
-                                    <i class="bi bi-file-earmark-text me-2"></i>Generate Laporan
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Document Tracking Section -->
-        <section id="document-tracking" class="mb-5">
-            <div class="card">
-                <div class="card-header">
-                    <i class="bi bi-file-earmark-text me-2"></i>Pelacakan Dokumen Ekspor
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>No. Dokumen</th>
-                                    <th>Jenis Dokumen</th>
-                                    <th>Tanggal</th>
-                                    <th>Status</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>EXP-2023-001</td>
-                                    <td>Invoice</td>
-                                    <td>15/10/2023</td>
-                                    <td><span class="badge bg-success">Disetujui</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary">
-                                            <i class="bi bi-eye"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>EXP-2023-002</td>
-                                    <td>Packing List</td>
-                                    <td>16/10/2023</td>
-                                    <td><span class="badge bg-warning">Proses</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary">
-                                            <i class="bi bi-eye"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>EXP-2023-003</td>
-                                    <td>Bill of Lading</td>
-                                    <td>17/10/2023</td>
-                                    <td><span class="badge bg-danger">Ditolak</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary">
-                                            <i class="bi bi-eye"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>EXP-2023-004</td>
-                                    <td>Certificate of Origin</td>
-                                    <td>18/10/2023</td>
-                                    <td><span class="badge bg-info">Diajukan</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary">
-                                            <i class="bi bi-eye"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="d-flex justify-content-between mt-3">
-                        <button class="btn btn-outline-primary">
-                            <i class="bi bi-plus-circle me-2"></i>Tambah Dokumen Baru
-                        </button>
-                        <button class="btn btn-primary">
-                            <i class="bi bi-download me-2"></i>Export Data
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Profit Calculator Section -->
-        <section id="profit-calculator" class="mb-5">
-            <div class="card">
-                <div class="card-header">
-                    <i class="bi bi-calculator me-2"></i>Simulasi Keuntungan
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h5 class="mb-3">Kalkulator Keuntungan per Kg</h5>
-                            <div class="mb-3">
-                                <label for="selling-price" class="form-label">Harga Jual per Kg (USD)</label>
-                                <input type="number" class="form-control" id="selling-price" value="3.5" step="0.1">
-                            </div>
-                            <div class="mb-3">
-                                <label for="production-cost" class="form-label">Biaya Produksi per Kg (USD)</label>
-                                <input type="number" class="form-control" id="production-cost" value="1.2" step="0.1">
-                            </div>
-                            <div class="mb-3">
-                                <label for="shipping-cost" class="form-label">Biaya Pengiriman per Kg (USD)</label>
-                                <input type="number" class="form-control" id="shipping-cost" value="0.8" step="0.1">
-                            </div>
-                            <div class="mb-3">
-                                <label for="quantity" class="form-label">Kuantitas (Kg)</label>
-                                <input type="number" class="form-control" id="quantity" value="100" step="10">
-                            </div>
-                            <button class="btn btn-primary w-100" onclick="calculateProfit()">
-                                <i class="bi bi-calculator me-2"></i>Hitung Keuntungan
-                            </button>
-                        </div>
-                        <div class="col-md-6">
-                            <h5 class="mb-3">Hasil Perhitungan</h5>
-                            <div id="profit-result" class="p-4 bg-light rounded">
-                                <div class="d-flex justify-content-between mb-3">
-                                    <span>Total Pendapatan:</span>
-                                    <span id="total-revenue" class="fw-bold">$350.00</span>
-                                </div>
-                                <div class="d-flex justify-content-between mb-3">
-                                    <span>Total Biaya:</span>
-                                    <span id="total-cost" class="fw-bold">$200.00</span>
-                                </div>
-                                <hr>
-                                <div class="d-flex justify-content-between mb-3">
-                                    <span>Keuntungan per Kg:</span>
-                                    <span id="profit-per-kg" class="fw-bold text-success">$1.50</span>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <span>Total Keuntungan:</span>
-                                    <span id="total-profit" class="fw-bold text-success">$150.00</span>
-                                </div>
-                                <div class="progress mt-3">
-                                    <div id="profit-margin-bar" class="progress-bar bg-success" role="progressbar" style="width: 42.9%"></div>
-                                </div>
-                                <div class="text-center mt-2">
-                                    <small>Margin Keuntungan: <span id="profit-margin">42.9%</span></small>
-                                </div>
-                            </div>
-                            <div class="mt-4">
-                                <h6>Rekomendasi:</h6>
-                                <div id="recommendation" class="alert alert-success">
-                                    Keuntungan Anda sangat baik! Pertimbangkan untuk meningkatkan produksi.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-
     <!-- Footer -->
-    <footer class="footer">
+    <footer>
         <div class="container">
             <div class="row">
-                <div class="col-md-6">
-                    <h5>TaniExport AI Assistant</h5>
-                    <p>Solusi AI untuk bisnis ekspor-impor keripik ubi yang terjangkau dan efisien.</p>
+                <div class="col-lg-4 mb-4">
+                    <h5 class="mb-3">TaniExport AI Pro</h5>
+                    <p>Platform AI-powered terdepan untuk optimasi bisnis ekspor keripik ubi di Indonesia. Menggabungkan teknologi 3D, machine learning, dan analisis real-time.</p>
+                    <div class="mt-3">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-youtube"></i></a>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <h5>Fitur</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#market-analysis" class="text-decoration-none">Analisis Pasar</a></li>
-                        <li><a href="#price-prediction" class="text-decoration-none">Prediksi Harga</a></li>
-                        <li><a href="#document-tracking" class="text-decoration-none">Pelacakan Dokumen</a></li>
-                        <li><a href="#profit-calculator" class="text-decoration-none">Kalkulator Keuntungan</a></li>
-                    </ul>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="mb-3">Fitur</h6>
+                    <div class="footer-links">
+                        <a href="#dashboard" class="d-block mb-2">Dashboard</a>
+                        <a href="#simulation-3d" class="d-block mb-2">Simulasi 3D</a>
+                        <a href="#market-analysis" class="d-block mb-2">Analisis Pasar</a>
+                        <a href="#ai-predictions" class="d-block mb-2">Prediksi AI</a>
+                        <a href="#supply-chain" class="d-block mb-2">Rantai Pasok</a>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <h5>Kontak</h5>
-                    <ul class="list-unstyled">
-                        <li><i class="bi bi-envelope me-2"></i>info@taniexport.ai</li>
-                        <li><i class="bi bi-telephone me-2"></i>+62 812-3456-7890</li>
-                        <li><i class="bi bi-geo-alt me-2"></i>Jakarta, Indonesia</li>
-                    </ul>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="mb-3">Perusahaan</h6>
+                    <div class="footer-links">
+                        <a href="#" class="d-block mb-2">Tentang Kami</a>
+                        <a href="#" class="d-block mb-2">Tim</a>
+                        <a href="#" class="d-block mb-2">Karir</a>
+                        <a href="#" class="d-block mb-2">Blog</a>
+                        <a href="#" class="d-block mb-2">Kontak</a>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <h6 class="mb-3">Newsletter</h6>
+                    <p>Dapatkan update terbaru tentang tren ekspor dan fitur AI kami</p>
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Email Anda">
+                        <button class="btn btn-primary" type="button">Subscribe</button>
+                    </div>
                 </div>
             </div>
-            <hr>
+            <hr class="my-4">
             <div class="text-center">
-                <p class="mb-0">&copy; 2023 TaniExport AI Assistant. Hak Cipta Dilindungi.</p>
+                <p class="mb-0">&copy; 2023 TaniExport AI Pro. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Initialize charts
+        // Initialize all components when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
-            // Market Trend Chart
-            const marketTrendCtx = document.getElementById('market-trend-chart').getContext('2d');
-            const marketTrendChart = new Chart(marketTrendCtx, {
+            initializeCharts();
+            initialize3D();
+            initializeHeroAnimation();
+            setupEventListeners();
+        });
+
+        // Chart initialization
+        function initializeCharts() {
+            // Export Trend Chart
+            const exportCtx = document.getElementById('export-trend-chart').getContext('2d');
+            new Chart(exportCtx, {
                 type: 'line',
                 data: {
                     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
                     datasets: [{
-                        label: 'Permintaan Pasar',
-                        data: [65, 70, 80, 81, 86, 95, 105, 110, 115, 120, 125, 130],
-                        borderColor: '#4e73df',
-                        backgroundColor: 'rgba(78, 115, 223, 0.05)',
+                        label: 'Volume Ekspor (Ton)',
+                        data: [12, 19, 15, 25, 22, 30, 28, 35, 32, 40, 38, 45],
+                        borderColor: '#6366f1',
+                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
                         tension: 0.4,
                         fill: true
                     }, {
-                        label: 'Harga Komoditas',
-                        data: [28, 30, 32, 33, 35, 38, 40, 42, 45, 48, 50, 52],
-                        borderColor: '#1cc88a',
-                        backgroundColor: 'rgba(28, 200, 138, 0.05)',
+                        label: 'Nilai Ekspor (Miliar Rp)',
+                        data: [24, 38, 30, 50, 44, 60, 56, 70, 64, 80, 76, 90],
+                        borderColor: '#8b5cf6',
+                        backgroundColor: 'rgba(139, 92, 246, 0.1)',
                         tension: 0.4,
                         fill: true
                     }]
@@ -526,73 +1202,347 @@
                     },
                     scales: {
                         y: {
-                            beginAtZero: false
+                            beginAtZero: true
                         }
                     }
                 }
             });
 
-            // Price Prediction Chart
-            const pricePredictionCtx = document.getElementById('price-prediction-chart').getContext('2d');
-            const pricePredictionChart = new Chart(pricePredictionCtx, {
+            // Market Share Chart
+            const marketCtx = document.getElementById('market-share-chart').getContext('2d');
+            new Chart(marketCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Jepang', 'Eropa', 'USA', 'Timur Tengah', 'Australia', 'Lainnya'],
+                    datasets: [{
+                        data: [30, 25, 15, 12, 10, 8],
+                        backgroundColor: [
+                            '#6366f1',
+                            '#8b5cf6',
+                            '#ec4899',
+                            '#f59e0b',
+                            '#10b981',
+                            '#06b6d4'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        }
+                    }
+                }
+            });
+
+            // Market Segment Chart
+            const segmentCtx = document.getElementById('market-segment-chart').getContext('2d');
+            new Chart(segmentCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Original', 'Pedas', 'Keju', 'BBQ', 'Seafood', 'Coklat'],
+                    datasets: [{
+                        label: 'Permintaan (Ton)',
+                        data: [45, 38, 32, 28, 22, 15],
+                        backgroundColor: '#6366f1'
+                    }, {
+                        label: 'Margin (%)',
+                        data: [25, 30, 28, 32, 35, 40],
+                        backgroundColor: '#8b5cf6'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Prediction Chart
+            const predictionCtx = document.getElementById('prediction-chart').getContext('2d');
+            new Chart(predictionCtx, {
                 type: 'line',
                 data: {
-                    labels: generateDateLabels(30),
+                    labels: generateDateLabels(90),
                     datasets: [{
-                        label: 'Prediksi Harga Ubi',
-                        data: generateRandomData(30, 50, 65),
-                        borderColor: '#36b9cc',
-                        backgroundColor: 'rgba(54, 185, 204, 0.2)',
+                        label: 'Prediksi Harga',
+                        data: generatePredictionData(90, 3.8, 4.5),
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
                         tension: 0.4,
                         fill: true
                     }, {
-                        label: 'Batas Atas',
-                        data: generateRandomData(30, 55, 70),
-                        borderColor: 'rgba(255, 99, 132, 0.5)',
-                        borderDash: [5, 5],
-                        fill: false,
-                        pointRadius: 0
-                    }, {
-                        label: 'Batas Bawah',
-                        data: generateRandomData(30, 45, 60),
-                        borderColor: 'rgba(255, 99, 132, 0.5)',
-                        borderDash: [5, 5],
-                        fill: false,
-                        pointRadius: 0
+                        label: 'Prediksi Permintaan',
+                        data: generatePredictionData(90, 7000, 9000),
+                        borderColor: '#06b6d4',
+                        backgroundColor: 'rgba(6, 182, 212, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        yAxisID: 'y1'
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        title: {
-                            display: false
-                        }
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
                     },
                     scales: {
                         y: {
-                            beginAtZero: false,
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
                             title: {
                                 display: true,
-                                text: 'Harga (USD per Kg)'
+                                text: 'Harga (USD)'
                             }
                         },
-                        x: {
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
                             title: {
                                 display: true,
-                                text: 'Tanggal'
-                            }
-                        }
+                                text: 'Permintaan (Kg)'
+                            },
+                            grid: {
+                                drawOnChartArea: false,
+                            },
+                        },
                     }
                 }
             });
+        }
 
-            // Initialize profit calculator
-            calculateProfit();
-        });
+        // 3D Simulation
+        let scene, camera, renderer, controls;
+        let farm, factory, port, ship;
+        let animationId;
+
+        function initialize3D() {
+            const container = document.getElementById('threejs-container');
+            
+            // Scene setup
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x1a202c);
+            scene.fog = new THREE.Fog(0x1a202c, 10, 50);
+
+            // Camera setup
+            camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.set(15, 10, 15);
+
+            // Renderer setup
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.shadowMap.enabled = true;
+            container.appendChild(renderer.domElement);
+
+            // Controls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(10, 20, 15);
+            directionalLight.castShadow = true;
+            scene.add(directionalLight);
+
+            // Ground
+            const groundGeometry = new THREE.PlaneGeometry(50, 50);
+            const groundMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0x2d3748,
+                roughness: 0.8,
+                metalness: 0.2
+            });
+            const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+            ground.rotation.x = -Math.PI / 2;
+            ground.receiveShadow = true;
+            scene.add(ground);
+
+            // Farm
+            const farmGeometry = new THREE.BoxGeometry(4, 3, 4);
+            const farmMaterial = new THREE.MeshStandardMaterial({ color: 0x48bb78 });
+            farm = new THREE.Mesh(farmGeometry, farmMaterial);
+            farm.position.set(-10, 1.5, -10);
+            farm.castShadow = true;
+            scene.add(farm);
+
+            // Farm label
+            const farmLabel = createTextSprite("Farm");
+            farmLabel.position.set(-10, 4, -10);
+            scene.add(farmLabel);
+
+            // Factory
+            const factoryGeometry = new THREE.BoxGeometry(6, 4, 6);
+            const factoryMaterial = new THREE.MeshStandardMaterial({ color: 0x4299e1 });
+            factory = new THREE.Mesh(factoryGeometry, factoryMaterial);
+            factory.position.set(0, 2, 0);
+            factory.castShadow = true;
+            scene.add(factory);
+
+            // Factory label
+            const factoryLabel = createTextSprite("Factory");
+            factoryLabel.position.set(0, 5, 0);
+            scene.add(factoryLabel);
+
+            // Port
+            const portGeometry = new THREE.BoxGeometry(5, 2, 8);
+            const portMaterial = new THREE.MeshStandardMaterial({ color: 0xed8936 });
+            port = new THREE.Mesh(portGeometry, portMaterial);
+            port.position.set(10, 1, 10);
+            port.castShadow = true;
+            scene.add(port);
+
+            // Port label
+            const portLabel = createTextSprite("Port");
+            portLabel.position.set(10, 3, 10);
+            scene.add(portLabel);
+
+            // Ship
+            const shipGeometry = new THREE.BoxGeometry(3, 1, 6);
+            const shipMaterial = new THREE.MeshStandardMaterial({ color: 0xe53e3e });
+            ship = new THREE.Mesh(shipGeometry, shipMaterial);
+            ship.position.set(10, 2, 10);
+            ship.castShadow = true;
+            scene.add(ship);
+
+            // Supply chain lines
+            createSupplyChainLine(farm.position, factory.position, 0x48bb78);
+            createSupplyChainLine(factory.position, port.position, 0x4299e1);
+
+            // Start animation
+            animate();
+        }
+
+        function createTextSprite(text) {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = 256;
+            canvas.height = 64;
+            
+            context.fillStyle = '#ffffff';
+            context.font = 'bold 48px Arial';
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            context.fillText(text, 128, 32);
+            
+            const texture = new THREE.CanvasTexture(canvas);
+            const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
+            const sprite = new THREE.Sprite(spriteMaterial);
+            sprite.scale.set(4, 1, 1);
+            
+            return sprite;
+        }
+
+        function createSupplyChainLine(start, end, color) {
+            const points = [];
+            points.push(new THREE.Vector3(start.x, start.y + 0.1, start.z));
+            points.push(new THREE.Vector3(end.x, end.y + 0.1, end.z));
+            
+            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+            const material = new THREE.LineBasicMaterial({ color: color, linewidth: 2 });
+            const line = new THREE.Line(geometry, material);
+            scene.add(line);
+        }
+
+        function animate() {
+            animationId = requestAnimationFrame(animate);
+            
+            // Rotate ship
+            ship.rotation.y += 0.01;
+            
+            // Move ship along path
+            const time = Date.now() * 0.001;
+            ship.position.x = 10 + Math.sin(time) * 5;
+            ship.position.z = 10 + Math.cos(time) * 5;
+            
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        // Hero animation
+        function initializeHeroAnimation() {
+            const canvas = document.getElementById('hero-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const particles = [];
+            const particleCount = 100;
+            
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 3 + 1,
+                    speedX: (Math.random() - 0.5) * 0.5,
+                    speedY: (Math.random() - 0.5) * 0.5,
+                    color: `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.2})`
+                });
+            }
+            
+            function animateHero() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                particles.forEach(particle => {
+                    particle.x += particle.speedX;
+                    particle.y += particle.speedY;
+                    
+                    if (particle.x < 0 || particle.x > canvas.width) particle.speedX *= -1;
+                    if (particle.y < 0 || particle.y > canvas.height) particle.speedY *= -1;
+                    
+                    ctx.beginPath();
+                    ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = particle.color;
+                    ctx.fill();
+                });
+                
+                requestAnimationFrame(animateHero);
+            }
+            
+            animateHero();
+        }
+
+        // Event listeners
+        function setupEventListeners() {
+            // Chat input
+            document.getElementById('chat-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+
+            // Profit calculator inputs
+            const calculatorInputs = document.querySelectorAll('.calculator-input');
+            calculatorInputs.forEach(input => {
+                input.addEventListener('input', calculateAdvancedProfit);
+            });
+
+            // Window resize
+            window.addEventListener('resize', function() {
+                if (camera && renderer) {
+                    camera.aspect = document.getElementById('threejs-container').clientWidth / 
+                                   document.getElementById('threejs-container').clientHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(
+                        document.getElementById('threejs-container').clientWidth, 
+                        document.getElementById('threejs-container').clientHeight
+                    );
+                }
+            });
+        }
 
         // Helper functions
         function generateDateLabels(days) {
@@ -606,11 +1556,11 @@
             return labels;
         }
 
-        function generateRandomData(count, min, max) {
+        function generatePredictionData(count, min, max) {
             const data = [];
             let value = (min + max) / 2;
             for (let i = 0; i < count; i++) {
-                value += (Math.random() - 0.5) * 2;
+                value += (Math.random() - 0.5) * 0.2;
                 if (value < min) value = min;
                 if (value > max) value = max;
                 data.push(value.toFixed(2));
@@ -622,88 +1572,252 @@
             document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
         }
 
-        function showInfo() {
-            alert('TaniExport AI Assistant adalah solusi berbasis AI untuk membantu pengusaha ekspor-impor keripik ubi mengelola bisnis mereka secara lebih efisien. Dengan fitur analisis pasar, prediksi harga, pelacakan dokumen, dan kalkulator keuntungan, Anda dapat membuat keputusan bisnis yang lebih baik.');
+        function showDemo() {
+            alert('Demo video akan segera tersedia. Silakan hubungi tim kami untuk demo langsung!');
         }
 
-        function analyzeSentiment() {
-            const newsInput = document.getElementById('news-input').value;
-            if (!newsInput.trim()) {
+        // 3D Controls
+        function rotateCamera() {
+            if (controls) {
+                controls.autoRotate = !controls.autoRotate;
+            }
+        }
+
+        function zoomIn() {
+            if (camera) {
+                camera.position.multiplyScalar(0.9);
+            }
+        }
+
+        function zoomOut() {
+            if (camera) {
+                camera.position.multiplyScalar(1.1);
+            }
+        }
+
+        function resetView() {
+            if (camera && controls) {
+                camera.position.set(15, 10, 15);
+                controls.reset();
+            }
+        }
+
+        function playAnimation() {
+            if (!animationId) {
+                animate();
+            }
+        }
+
+        function pauseAnimation() {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
+        }
+
+        function changeView(view) {
+            if (camera) {
+                switch(view) {
+                    case 'farm':
+                        camera.position.set(-15, 8, -15);
+                        break;
+                    case 'factory':
+                        camera.position.set(0, 15, 15);
+                        break;
+                    case 'port':
+                        camera.position.set(15, 8, 15);
+                        break;
+                }
+                controls.update();
+            }
+        }
+
+        function generateOptimizationReport() {
+            alert('Laporan optimasi AI sedang dibuat. Anda akan menerima notifikasi saat laporan siap diunduh.');
+        }
+
+        // Market analysis
+        function analyzeMarketSentiment() {
+            const news = document.getElementById('market-news').value;
+            if (!news.trim()) {
                 alert('Silakan masukkan berita pasar terlebih dahulu');
                 return;
             }
 
-            // Simulate sentiment analysis
+            // Simulate AI analysis
             const sentimentResult = document.getElementById('sentiment-result');
-            const sentimentText = document.getElementById('sentiment-text');
+            const sentimentScore = document.getElementById('sentiment-score');
             const sentimentBar = document.getElementById('sentiment-bar');
+            const aiRecommendation = document.getElementById('ai-recommendation');
             
             // Generate random sentiment for demo
             const sentiments = [
-                { type: 'positive', label: 'Positif', score: 85 },
-                { type: 'negative', label: 'Negatif', score: 65 },
-                { type: 'neutral', label: 'Netral', score: 50 }
+                { score: 85, label: '85% Positif', class: 'bg-success', 
+                  recommendation: 'Tingkatkan produksi untuk memenuhi permintaan. Margin potensial: 20-25%' },
+                { score: 65, label: '65% Netral', class: 'bg-warning', 
+                  recommendation: 'Pertahankan produksi saat ini. Fokus pada efisiensi biaya' },
+                { score: 35, label: '35% Negatif', class: 'bg-danger', 
+                  recommendation: 'Kurangi produksi dan cari pasar alternatif. Evaluasi strategi harga' }
             ];
             
             const randomSentiment = sentiments[Math.floor(Math.random() * sentiments.length)];
             
             sentimentResult.classList.remove('d-none');
-            sentimentText.innerHTML = `
-                <span class="sentiment-${randomSentiment.type} fw-bold">${randomSentiment.label}</span>
-                <span class="ms-2">(${randomSentiment.score}% keyakinan)</span>
-            `;
-            
+            sentimentScore.textContent = randomSentiment.label;
             sentimentBar.style.width = `${randomSentiment.score}%`;
-            sentimentBar.classList.remove('bg-success', 'bg-danger', 'bg-warning');
-            
-            if (randomSentiment.type === 'positive') {
-                sentimentBar.classList.add('bg-success');
-            } else if (randomSentiment.type === 'negative') {
-                sentimentBar.classList.add('bg-danger');
-            } else {
-                sentimentBar.classList.add('bg-warning');
-            }
+            sentimentBar.className = `progress-bar ${randomSentiment.class}`;
+            aiRecommendation.textContent = randomSentiment.recommendation;
         }
 
-        function calculateProfit() {
+        // Profit calculator
+        function calculateAdvancedProfit() {
             const sellingPrice = parseFloat(document.getElementById('selling-price').value) || 0;
             const productionCost = parseFloat(document.getElementById('production-cost').value) || 0;
             const shippingCost = parseFloat(document.getElementById('shipping-cost').value) || 0;
+            const taxCost = parseFloat(document.getElementById('tax-cost').value) || 0;
             const quantity = parseFloat(document.getElementById('quantity').value) || 0;
+            const destination = document.getElementById('destination').value;
             
-            const profitPerKg = sellingPrice - (productionCost + shippingCost);
+            // Calculate additional costs based on destination
+            let additionalCost = 0;
+            switch(destination) {
+                case 'japan':
+                    additionalCost = 0.15; // 15% additional cost for Japan
+                    break;
+                case 'europe':
+                    additionalCost = 0.20; // 20% additional cost for Europe
+                    break;
+                case 'usa':
+                    additionalCost = 0.18; // 18% additional cost for USA
+                    break;
+                case 'middleeast':
+                    additionalCost = 0.12; // 12% additional cost for Middle East
+                    break;
+                case 'australia':
+                    additionalCost = 0.10; // 10% additional cost for Australia
+                    break;
+            }
+            
+            const totalCostPerKg = productionCost + shippingCost + (sellingPrice * taxCost / 100) + (sellingPrice * additionalCost);
+            const profitPerKg = sellingPrice - totalCostPerKg;
             const totalRevenue = sellingPrice * quantity;
-            const totalCost = (productionCost + shippingCost) * quantity;
+            const totalCost = totalCostPerKg * quantity;
             const totalProfit = profitPerKg * quantity;
             const profitMargin = sellingPrice > 0 ? (profitPerKg / sellingPrice) * 100 : 0;
             
+            // Update UI
             document.getElementById('total-revenue').textContent = `$${totalRevenue.toFixed(2)}`;
             document.getElementById('total-cost').textContent = `$${totalCost.toFixed(2)}`;
             document.getElementById('profit-per-kg').textContent = `$${profitPerKg.toFixed(2)}`;
             document.getElementById('total-profit').textContent = `$${totalProfit.toFixed(2)}`;
-            document.getElementById('profit-margin').textContent = `${profitMargin.toFixed(1)}%`;
             
             const profitMarginBar = document.getElementById('profit-margin-bar');
             profitMarginBar.style.width = `${Math.min(profitMargin, 100)}%`;
+            profitMarginBar.textContent = `${profitMargin.toFixed(1)}%`;
             
-            // Update recommendation based on profit margin
-            const recommendation = document.getElementById('recommendation');
+            // Update recommendation
+            const recommendation = document.getElementById('profit-recommendation');
             recommendation.classList.remove('alert-success', 'alert-warning', 'alert-danger');
             
-            if (profitMargin > 30) {
+            if (profitMargin > 25) {
                 recommendation.classList.add('alert-success');
-                recommendation.textContent = 'Keuntungan Anda sangat baik! Pertimbangkan untuk meningkatkan produksi.';
+                recommendation.innerHTML = `
+                    <i class="fas fa-lightbulb me-2"></i>
+                    <strong>Rekomendasi AI:</strong> Margin keuntungan Anda sangat baik! 
+                    Pertimbangkan untuk meningkatkan volume penjualan ke ${getDestinationName(destination)}.
+                `;
             } else if (profitMargin > 15) {
                 recommendation.classList.add('alert-warning');
-                recommendation.textContent = 'Keuntungan Anda cukup baik. Cari cara untuk mengurangi biaya produksi.';
+                recommendation.innerHTML = `
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Rekomendasi AI:</strong> Margin keuntungan Anda cukup baik. 
+                    Fokus pada efisiensi biaya produksi dan negosiasi dengan supplier.
+                `;
             } else {
                 recommendation.classList.add('alert-danger');
-                recommendation.textContent = 'Keuntungan Anda rendah. Segera evaluasi strategi harga dan biaya produksi.';
+                recommendation.innerHTML = `
+                    <i class="fas fa-times-circle me-2"></i>
+                    <strong>Rekomendasi AI:</strong> Margin keuntungan Anda rendah. 
+                    Segera evaluasi strategi harga dan biaya produksi. 
+                    Pertimbangkan pasar alternatif dengan biaya lebih rendah.
+                `;
             }
         }
 
-        function generateReport() {
-            alert('Laporan prediksi harga sedang dibuat. Anda akan menerima notifikasi saat laporan siap diunduh.');
+        function getDestinationName(destination) {
+            const names = {
+                'japan': 'Jepang',
+                'europe': 'Eropa',
+                'usa': 'Amerika Serikat',
+                'middleeast': 'Timur Tengah',
+                'australia': 'Australia'
+            };
+            return names[destination] || destination;
+        }
+
+        function saveCalculation() {
+            alert('Perhitungan berhasil disimpan!');
+        }
+
+        function exportCalculation() {
+            alert('Laporan keuntungan sedang dibuat. Anda akan menerima notifikasi saat file siap diunduh.');
+        }
+
+        // Chatbot functions
+        function toggleChat() {
+            const chatWindow = document.getElementById('chat-window');
+            chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message
+            addMessage(message, 'user');
+            input.value = '';
+            
+            // Simulate AI response
+            setTimeout(() => {
+                const response = generateAIResponse(message);
+                addMessage(response, 'ai');
+            }, 1000);
+        }
+
+        function addMessage(text, sender) {
+            const messagesContainer = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.className = 'message-bubble';
+            bubbleDiv.textContent = text;
+            
+            messageDiv.appendChild(bubbleDiv);
+            messagesContainer.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function generateAIResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            if (lowerMessage.includes('harga') || lowerMessage.includes('prediksi')) {
+                return 'Berdasarkan analisis AI kami, prediksi harga ubi untuk 30 hari ke depan adalah $4.25/Kg dengan tren kenaikan. Permintaan diprediksi meningkat 18% dari bulan lalu.';
+            } else if (lowerMessage.includes('pasar') || lowerMessage.includes('ekspor')) {
+                return 'Pasar Jepang saat ini menunjukkan pertumbuhan tercepat dengan permintaan 32% YoY. Eropa tetap menjadi pasar terbesar dengan margin tertinggi 25-30%.';
+            } else if (lowerMessage.includes('produksi') || lowerMessage.includes('stok')) {
+                return 'Stok saat ini 2,450 Kg. Disarankan untuk menambah produksi 2,000 Kg untuk memenuhi permintaan Q4. Lead time produksi: 14 hari.';
+            } else if (lowerMessage.includes('profit') || lowerMessage.includes('keuntungan')) {
+                return 'Margin keuntungan rata-rata saat ini 22-28%. Untuk meningkatkan profit, pertimbangkan: 1) Negosiasi harga bahan baku, 2) Optimasi rute pengiriman, 3) Fokus pada produk premium.';
+            } else if (lowerMessage.includes('help') || lowerMessage.includes('bantuan')) {
+                return 'Saya bisa membantu Anda dengan: analisis pasar, prediksi harga, manajemen stok, perhitungan keuntungan, rekomendasi bisnis, dan optimasi rantai pasok. Ada yang spesifik ingin Anda tanyakan?';
+            } else {
+                return 'Terima kasih atas pertanyaan Anda. Saya akan analisis data terkini dan memberikan rekomendasi terbaik untuk bisnis Anda. Ada informasi spesifik yang Anda butuhkan?';
+            }
         }
     </script>
 </body>
